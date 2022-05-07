@@ -27,9 +27,11 @@ typedef struct {
 	const void *cmd;
 } Sp;
 const char *spcmd1[] = {"alacritty", "--class", "spterm", "--config-file", "/home/useless/.config/alacritty/alacritty-scratchpad.yml", NULL };
+const char *spcmd2[] = {"keepassxc", NULL };
 static Sp scratchpads[] = {
 	/* name          cmd  */
 	{"spterm",      spcmd1},
+    {"keepassxc",   spcmd2},
 };
 
 /* tagging */
@@ -45,6 +47,7 @@ static const Rule rules[] = {
 	{ "Alacritty",	NULL,		NULL,           0,         0,          1,           0,        -1 },
 	{ NULL,			NULL,		"Event Tester", 0,         0,          0,           1,        -1 }, /* xev */
 	{ NULL,			"spterm",	NULL,		   	SPTAG(0),  1,		   0, 			0,		  -1 },
+    { NULL,         "keepassxc", NULL,          SPTAG(1),  1,          0,           0,        -1 },
 };
 
 /* layout(s) */
@@ -100,6 +103,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
 	{ MODKEY,            			XK_x,  	   togglescratch,  {.ui = 0 } },
+    { Mod4Mask,                     XK_p,      togglescratch,  {.ui = 1 } },
 	{ MODKEY,                       XK_minus,  setgaps,        {.i = -4 } },
 	{ MODKEY,                       XK_equal,  setgaps,        {.i = +4 } },
 	{ MODKEY|ShiftMask,             XK_equal,  setgaps,        {.i = 0  } },
