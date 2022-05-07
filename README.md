@@ -17,6 +17,8 @@
 
 - [hide vacant tags](https://dwm.suckless.org/patches/hide_vacant_tags/): This patch prevents dwm from drawing tags with no clients (i.e. vacant) on the bar.
 
+- [monoclesymbol](https://dwm.suckless.org/patches/monoclesymbol/): This patch always display the the monocle-symbol as defined in config.h if the monocle-layout is activated. Do not display the number of open clients in the current tag.
+
 ### Requirements/Dependencies
 In order to build dwm you need the Xlib header files.
 
