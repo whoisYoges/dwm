@@ -73,7 +73,7 @@ enum { NetSupported, NetWMName, NetWMState, NetWMCheck,
        NetWMFullscreen, NetActiveWindow, NetWMWindowType,
        NetWMWindowTypeDialog, NetClientList, NetLast }; /* EWMH atoms */
 enum { WMProtocols, WMDelete, WMState, WMTakeFocus, WMLast }; /* default atoms */
-enum { ClkTagBar, ClkLtSymbol, ClkStatusText, ClkClientWin,
+enum { ClkTagBar,/* ClkLtSymboli, */ ClkStatusText, ClkClientWin,
        ClkRootWin, ClkLast }; /* clicks */
 
 typedef union {
@@ -539,8 +539,11 @@ buttonpress(XEvent *e)
 		if (i < LENGTH(tags)) {
 			click = ClkTagBar;
 			arg.ui = 1 << i;
-		} else if (ev->x < x + blw)
-			click = ClkLtSymbol;
+		} 
+        /*
+            else if (ev->x < x + blw)
+		    click = ClkLtSymbol;
+        */
 		else
 			click = ClkStatusText;
 	} else if ((c = wintoclient(ev->window))) {

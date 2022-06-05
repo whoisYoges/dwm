@@ -2,10 +2,10 @@
 
 /* appearance */
 static const unsigned int borderpx  = 0;        /* border pixel of windows */
-static const unsigned int gappx     = 5;        /* gaps between windows */
+static const unsigned int gappx     = 4;        /* gaps between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
-static const int showbar            = 1;        /* 0 means no bar */
+static const int showbar            = 0;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const int vertpad            = 12;       /* vertical padding of bar */
 static const int sidepad            = 12;       /* horizontal padding of bar */
@@ -29,13 +29,15 @@ typedef struct {
 const char *spcmd1[] = {"alacritty", "--class", "spterm1", "--config-file", "/home/useless/.config/alacritty/alacritty-scratchpad.yml", NULL };
 const char *spcmd2[] = {"alacritty", "--class", "spterm2", "--config-file", "/home/useless/.config/alacritty/alacritty-scratchpad.yml", NULL };
 const char *spcmd3[] = {"alacritty", "--class", "spterm3", "--config-file", "/home/useless/.config/alacritty/alacritty-scratchpad.yml", NULL };
-const char *spcmd4[] = {"keepassxc", NULL };
+const char *spcmd4[] = {"keepassxc", NULL }; //password manager
+const char *spcmd5[] = {"deadbeef", NULL }; //music player
 static Sp scratchpads[] = {
 	/* name          cmd  */
-	{"spterm1",      spcmd1},
+	{"spterm1",     spcmd1},
 	{"spterm2",     spcmd2},
 	{"spterm3",     spcmd3},
     {"keepassxc",   spcmd4},
+    {"deadbeef",    spcmd5},
 };
 
 /* tagging */
@@ -54,6 +56,7 @@ static const Rule rules[] = {
 	{ NULL,			"spterm2",	NULL,		   	SPTAG(1),  1,		   0, 			0,		  -1 },
 	{ NULL,			"spterm3",	NULL,		   	SPTAG(2),  1,		   0, 			0,		  -1 },
     { NULL,         "keepassxc", NULL,          SPTAG(3),  1,          0,           0,        -1 },
+    { NULL,         "deadbeef", NULL,           SPTAG(4),  1,          0,           0,        -1 },
 };
 
 /* layout(s) */
@@ -108,10 +111,6 @@ static Key keys[] = {
 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
-	{ MODKEY,            			XK_x,  	   togglescratch,  {.ui = 0 } },
-	{ MODKEY,            			XK_c,  	   togglescratch,  {.ui = 1 } },
-	{ MODKEY,            			XK_v,  	   togglescratch,  {.ui = 2 } },
-    { Mod4Mask,                     XK_p,      togglescratch,  {.ui = 3 } },
 	{ MODKEY,                       XK_minus,  setgaps,        {.i = -4 } },
 	{ MODKEY,                       XK_equal,  setgaps,        {.i = +4 } },
 	{ MODKEY|ShiftMask,             XK_equal,  setgaps,        {.i = 0  } },
@@ -121,20 +120,27 @@ static Key keys[] = {
 	TAGKEYS(                        XK_4,                      3)
 	TAGKEYS(                        XK_5,                      4)
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
+    
+    /* Scratchpads */
+	{ MODKEY,            			XK_x,  	   togglescratch,  {.ui = 0 } },
+	{ MODKEY,            			XK_c,  	   togglescratch,  {.ui = 1 } },
+	{ MODKEY,            			XK_v,  	   togglescratch,  {.ui = 2 } },
+    { Mod4Mask,                     XK_p,      togglescratch,  {.ui = 3 } },
+    { Mod4Mask,                     XK_a,      togglescratch,  {.ui = 4 } },
 };
 
 /* button definitions */
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
 static Button buttons[] = {
 	/* click                event mask      button          function        argument */
-	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
-	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
+/*	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
+	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} }, */
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
 	{ ClkClientWin,         MODKEY,         Button1,        resizemouse,    {0} },
-	{ ClkTagBar,            0,              Button1,        view,           {0} },
+/*	{ ClkTagBar,            0,              Button1,        view,           {0} },
 	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
-	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
+	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },*/
 };
 
