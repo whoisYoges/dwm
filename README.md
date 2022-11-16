@@ -27,20 +27,21 @@ In order to build dwm you need the Xlib header files.
 - xcb-res
 - libxinerama
 - libx11
-- Comic Sans Ms font (If you want to use another font edit [config.h](config.h))
+- Comic Sans Ms font (If you want to use another font edit in the configuration)
 - font-awesome (for iconic tags in dwm-bar)
 - [libxft-bgra](https://aur.archlinux.org/packages/libxft-bgra) (for colored emoji support)
 
 ### Features
-- applied alacritty as default scratchpad terminal (MODKEY+x)
+- applied alacritty as default scratchpad terminal (MODKEY+x, MODKEY+c, MODKEY+v)
+- applied deadbeef as scratchpad audio/music player (Super+a)
+- applied geany as scratchpad note taking application (Super+t)
+- applied keepassxc as scratchpad password manager (Super+p)
 - applied swallow feature for alacritty terminal
 - default font: Comic Sans MS
 - Iconic tags symbols
+- Removed clickability from the bar
 
 ### Configuration and installation
 Edit config.mk to match your local setup (dwm is installed into the /usr/local namespace by default).
 
-The configuration of dwm is done in [config.h](config.h) and then (re)compiling the source code.
-```diff
-+ Note: If you apply any other/extra patches that modifies config.def.h, patch according in config.h cause all the previous patches and settings are applied to config.h.
-````
+The configuration of dwm is done copying [config.def.h](config.def.h) to `config.h`, editing it and then (re)compiling the source code.
