@@ -11,12 +11,12 @@ static const int vertpad            = 12;       /* vertical padding of bar */
 static const int sidepad            = 12;       /* horizontal padding of bar */
 static const char *fonts[]          = { "Comic Sans MS:size=12" };
 
-static const char normbg[]			= "#222222";
-static const char normfg[]			= "#78fa6e";
-static const char normborder[]      = "#bbc700";
+static const char normbg[]			= "#242424";
+static const char normfg[]			= "#08FF08";
+static const char normborder[]      = "#133333";
 static const char selbg[]			= "#222222";
-static const char selfg[]			= "#db9f00";
-static const char selborder[]		= "#93ea45";
+static const char selfg[]			= "#FFFF00";
+static const char selborder[]		= "#1338F0";
 
 static const char *colors[][3]      = {
 	/*               fg			bg			border   */
@@ -28,9 +28,10 @@ typedef struct {
 	const char *name;
 	const void *cmd;
 } Sp;
-const char *spcmd1[] = {"alacritty", "--class", "spterm1", "--config-file", "/home/useless/.config/alacritty/alacritty-scratchpad.yml", NULL };
-const char *spcmd2[] = {"alacritty", "--class", "spterm2", "--config-file", "/home/useless/.config/alacritty/alacritty-scratchpad.yml", NULL };
-const char *spcmd3[] = {"alacritty", "--class", "spterm3", "--config-file", "/home/useless/.config/alacritty/alacritty-scratchpad.yml", NULL };
+
+const char *spcmd1[] = {"alacritty", "--class", "spterm1", "-o", "window.dimensions.lines=15", "-o", "window.dimensions.columns=60", NULL };
+const char *spcmd2[] = {"alacritty", "--class", "spterm2", "-o", "window.dimensions.lines=15", "-o", "window.dimensions.columns=60", NULL };
+const char *spcmd3[] = {"alacritty", "--class", "spterm3", "-o", "window.dimensions.lines=15", "-o", "window.dimensions.columns=60", NULL };
 const char *spcmd4[] = {"keepassxc", NULL }; //password manager
 const char *spcmd5[] = {"deadbeef", NULL }; //music player
 const char *spcmd6[] = {"geany", NULL }; //todo and instant notes
@@ -85,11 +86,7 @@ static const Layout layouts[] = {
 	{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
 
-/* helper for spawning shell commands in the pre dwm-5.0 fashion */
-#define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
-
-/* commands */
-
+/* Key Bindings */
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
@@ -115,7 +112,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
 	{ MODKEY,                       XK_minus,  setgaps,        {.i = -4 } },
 	{ MODKEY,                       XK_equal,  setgaps,        {.i = +4 } },
-	{ MODKEY|ShiftMask,             XK_equal,  setgaps,        {.i = 12  } },
+	{ MODKEY|ShiftMask,             XK_equal,  setgaps,        {.i = 0  } },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
