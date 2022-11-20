@@ -29,6 +29,7 @@ In order to build dwm you need the Xlib header files.
 - libx11
 - Comic Sans Ms font (If you want to use another font edit in the configuration)
 - font-awesome (for iconic tags in dwm-bar)
+- Noto Color Emoji font (for colored emoji support)
 - [libxft-bgra](https://aur.archlinux.org/packages/libxft-bgra) (for colored emoji support)
 
 ### Features
