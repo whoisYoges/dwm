@@ -2,67 +2,72 @@
 
 /* appearance */
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
-static const unsigned int gappx     = 5;        /* gaps between windows */
+static const unsigned int gappx     = 4;        /* gaps between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
-static const int showbar            = 1;        /* 0 means no bar */
+static const int showbar            = 0;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const int vertpad            = 10;       /* vertical padding of bar */
-static const int sidepad            = 10;       /* horizontal padding of bar */
-static const char *fonts[]          = { "monospace:size=10" };
-static const char dmenufont[]       = "monospace:size=10";
-static const char col_gray1[]       = "#222222";
-static const char col_gray2[]       = "#444444";
-static const char col_gray3[]       = "#bbbbbb";
-static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#005577";
+static const int vertpad            = 12;       /* vertical padding of bar */
+static const int sidepad            = 12;       /* horizontal padding of bar */
+static const char *fonts[]          = { "Comic Sans MS:size=12", "Font Awesome 6 Free Solid:size=10"};
+
+static const char normbg[]			= "#242424";
+static const char normfg[]			= "#08FF08";
+static const char normborder[]      = "#133333";
+static const char selbg[]			= "#222222";
+static const char selfg[]			= "#ff0000";
+static const char selborder[]		= "#ff0000";
+
 static const char *colors[][3]      = {
-	/*               fg         bg         border   */
-	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
-	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
+	/*               fg			bg			border   */
+	[SchemeNorm] = { normfg,	normbg,		normborder},
+	[SchemeSel]  = { selfg,		selbg,		selborder  },
 };
 
 typedef struct {
 	const char *name;
 	const void *cmd;
 } Sp;
-const char *spcmd1[] = {"st", "-n", "spterm", "-g", "120x34", NULL };
-const char *spcmd2[] = {"st", "-n", "spfm", "-g", "144x41", "-e", "ranger", NULL };
-const char *spcmd3[] = {"keepassxc", NULL };
+const char *spcmd1[] = {"alacritty", "--class", "spterm1", "-o", "window.dimensions.lines=15", "-o", "window.dimensions.columns=60", NULL };
+const char *spcmd2[] = {"alacritty", "--class", "spterm2", "-o", "window.dimensions.lines=12", "-o", "window.dimensions.columns=65", NULL };
+const char *spcmd3[] = {"alacritty", "--class", "spterm3", "-o", "window.dimensions.lines=10", "-o", "window.dimensions.columns=70", NULL };
+const char *spcmd4[] = {"keepassxc", NULL }; //password manager
+
 static Sp scratchpads[] = {
 	/* name          cmd  */
-	{"spterm",      spcmd1},
-	{"spranger",    spcmd2},
-	{"keepassxc",   spcmd3},
+	{"spterm1",      spcmd1},
+	{"spterm2",      spcmd2},
+	{"spterm3",      spcmd3},
+	{"keepassxc",    spcmd4},
 };
 
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+static const char *tags[] = { "", "", "", "", "" };
 static const Rule rules[] = {
 	/* xprop(1):
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class	instance		title      tags mask	isfloating	isterminal	noswallow	monitor */
-	{ "Gimp",	  NULL,			NULL,		0,				1,			0,			0,			-1 },
-	{ "Firefox",  NULL,			NULL,		1 << 8,			0,			0,			-1,			-1 },
-	{ NULL,		  "spterm",		NULL,		SPTAG(0),		1,			1,			0			-1 },
-	{ NULL,		  "spfm",		NULL,		SPTAG(1),		1,			1,			0			-1 },
-	{ NULL,		  "keepassxc",	NULL,		SPTAG(2),		0,			0,			0			-1 },
+	{ NULL,		  "spterm1",	NULL,		SPTAG(0),  		1,		    1, 			0,		    -1 },
+	{ NULL,		  "spterm2",	NULL,		SPTAG(1),  		1,		    1, 			0,		    -1 },
+	{ NULL,		  "spterm3",	NULL,		SPTAG(2),  		1,		    1, 			0,		    -1 },
+    { NULL,       "keepassxc", NULL,        SPTAG(3),  		1,          0,          0,          -1 },
+	{ "Alacritty", NULL,		NULL,       0,       		0,          1,          0,        	-1 },
 	{ NULL,		  NULL,     "Event Tester", 0,         		0,          0,          1,        	-1 }, /* xev */
 };
 
 /* layout(s) */
-static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
+static const float mfact     = 0.52; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
-	{ "[]=",      tile },    /* first entry is default */
-	{ "><>",      NULL },    /* no layout function means floating behavior */
-	{ "[M]",      monocle },
+	{ "",      tile },    /* first entry is default */
+	{ "",      NULL },    /* no layout function means floating behavior */
+	{ "",      monocle },
 };
 
 /* key definitions */
@@ -73,18 +78,8 @@ static const Layout layouts[] = {
 	{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
 
-/* helper for spawning shell commands in the pre dwm-5.0 fashion */
-#define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
-
-/* commands */
-static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
-static const char *termcmd[]  = { "st", NULL };
-
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
-	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
-	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
@@ -106,21 +101,20 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
-	{ MODKEY,            			XK_y,  	   togglescratch,  {.ui = 0 } },
-	{ MODKEY,            			XK_u,	   togglescratch,  {.ui = 1 } },
-	{ MODKEY,            			XK_x,	   togglescratch,  {.ui = 2 } },
-	{ MODKEY,                       XK_minus,  setgaps,        {.i = -1 } },
-	{ MODKEY,                       XK_equal,  setgaps,        {.i = +1 } },
+	{ MODKEY,            			XK_x,  	   togglescratch,  {.ui = 0 } },
+	{ MODKEY,            			XK_c,  	   togglescratch,  {.ui = 1 } },
+	{ MODKEY,            			XK_v,  	   togglescratch,  {.ui = 2 } },
+    { Mod4Mask,                     XK_p,      togglescratch,  {.ui = 3 } },
+	{ MODKEY,                       XK_minus,  setgaps,        {.i = -3 } },
+	{ MODKEY,                       XK_equal,  setgaps,        {.i = +3 } },
 	{ MODKEY|ShiftMask,             XK_equal,  setgaps,        {.i = 0  } },
+	{ MODKEY,                       XK_r,	   movemouse,      {0} },
+	{ MODKEY|ShiftMask,             XK_r,	   resizemouse,    {0} },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
 	TAGKEYS(                        XK_4,                      3)
 	TAGKEYS(                        XK_5,                      4)
-	TAGKEYS(                        XK_6,                      5)
-	TAGKEYS(                        XK_7,                      6)
-	TAGKEYS(                        XK_8,                      7)
-	TAGKEYS(                        XK_9,                      8)
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
 	{ MODKEY|ControlMask|ShiftMask, XK_q,      quit,           {1} }, 
 };
@@ -129,15 +123,7 @@ static const Key keys[] = {
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
 static const Button buttons[] = {
 	/* click                event mask      button          function        argument */
-	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
-	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
-	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
-	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
-	{ ClkClientWin,         MODKEY,         Button1,        resizemouse,    {0} },
-	{ ClkTagBar,            0,              Button1,        view,           {0} },
-	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
-	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
-	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
+	{ ClkClientWin,         MODKEY|ShiftMask,Button1,       resizemouse,    {0} },
 };
 
