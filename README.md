@@ -28,6 +28,8 @@
 
 - [swallow](https://dwm.suckless.org/patches/swallow/): This patch adds "window swallowing" to dwm. Example, when you open a gui application from terminal, it hides the terminal in background, leaving that application only without splitting terminal and that application; terminal can be accessed back after closing the gui application.
 
+- [rotatetags](https://dwm.suckless.org/patches/rotatetags/): This patch provides the ability to rotate the tagset left / right. It implements a new function rotatetags which modifies the current tagset.
+
 ### Features
 - applied alacritty as default scratchpad terminal (`Mod+x`, `Mod+c`, `Mod+v`)
 - applied keepassxc as scratchpad password manager (`Super+p`)
@@ -35,6 +37,7 @@
 - Removed clickability from the bar
 - Reconfigured `Mod+button1` to move window and `Mod+Shift+button1` to resize window. (Earlier both were done by `Mod+button1`)
 - Added `Mod+r` to move window and `Mod+Shift+r` to resize window using mouse/touchpad.
+- `Mod+shift+Left` and `Mod+shift+Right` to change the tags/worksapces.
 
 ### Dependencies
 
