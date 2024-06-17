@@ -1,4 +1,4 @@
-config.h
+#config.h
 *.o
 dwm
 *.orig
