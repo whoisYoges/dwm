@@ -10,17 +10,32 @@ static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]          = { "CaskaydiaCove NF:size=11", "Symbols Nerd Font:size=9" };
 
-static const char normbg[]          = "#3c3836";
-static const char normfg[]          = "#ebdbb2";
-static const char normborder[]      = "#a89984";
-static const char selbg[]           = "#282828";
-static const char selfg[]           = "#b8bb26";
-static const char selborder[]       = "#458588";
+/* Color Scheme - Light */
+static const char light_normbg[]          = "#e6e7ed";
+static const char light_normfg[]          = "#343b58";
+static const char light_normborder[]      = "#5a3e8e";
+static const char light_selbg[]           = "#e6e7ed";
+static const char light_selfg[]           = "#965027";
+static const char light_selborder[]       = "#965027";
 
-static const char *colors[][3]      = {
-	/*               fg         bg          border   */
-	[SchemeNorm] = { normfg,    normbg,     normborder},
-	[SchemeSel]  = { selfg,     selbg,      selborder  },
+/* Color Scheme - Dark */
+static const char dark_normbg[]          = "#313244";
+static const char dark_normfg[]          = "#cdd6f4";
+static const char dark_normborder[]      = "#f5e0dc";
+static const char dark_selbg[]           = "#313244";
+static const char dark_selfg[]           = "#f38ba8";
+static const char dark_selborder[]       = "#f38ba8";
+
+static const char *colors[][SchemeN][3] = {
+		/*               fg         bg         border   */
+	{ /* dark */
+		[SchemeNorm] = { dark_normfg,    dark_normbg,     dark_normborder},
+		[SchemeSel]  = { dark_selfg,     dark_selbg,      dark_selborder  },
+	},
+	{ /* light */
+		[SchemeNorm] = { light_normfg,    light_normbg,     light_normborder},
+		[SchemeSel]  = { light_selfg,     light_selbg,      light_selborder  },
+	},
 };
 
 typedef struct {
@@ -82,21 +97,22 @@ static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, NULL };
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
-	{ MODKEY|ShiftMask,             XK_Return, spawn,          SHCMD("/usr/bin/kitty") },
-	{ Mod4Mask,             		XK_b,      spawn,          SHCMD("/usr/bin/firefox -P") },
-	{ Mod4Mask,             		XK_f,      spawn,          SHCMD("/usr/bin/pcmanfm") },
-	{ Mod4Mask,             		XK_m,      spawn,          SHCMD("/usr/bin/thunderbird") },
-	{ Mod4Mask,             		XK_l,      spawn,          SHCMD("/usr/bin/slock") },
-	{ 0,              XF86XK_MonBrightnessUp,  spawn,          SHCMD("/usr/bin/light -A 1 && /usr/bin/pkill -RTMIN+5 dwmblocks") },
-	{ 0,             XF86XK_MonBrightnessDown, spawn,          SHCMD("/usr/bin/light -U 1 && /usr/bin/pkill -RTMIN+5 dwmblocks") },
-	{ 0,              XF86XK_AudioLowerVolume, spawn,          SHCMD("/usr/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- && /usr/bin/pkill -RTMIN+6 dwmblocks") },
-	{ 0,              XF86XK_AudioRaiseVolume, spawn,          SHCMD("/usr/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ && /usr/bin/pkill -RTMIN+6 dwmblocks") },
-	{ 0,                	 XF86XK_AudioMute, spawn,          SHCMD("/usr/bin/wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && /usr/bin/pkill -RTMIN+6 dwmblocks") },
-	{ ControlMask,    XF86XK_AudioLowerVolume, spawn,          SHCMD("/usr/bin/wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 5%- && /usr/bin/pkill -RTMIN+7 dwmblocks") },
-	{ ControlMask,    XF86XK_AudioRaiseVolume, spawn,          SHCMD("/usr/bin/wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 5%+ && /usr/bin/pkill -RTMIN+7 dwmblocks") },
-	{ ControlMask,           XF86XK_AudioMute, spawn,          SHCMD("/usr/bin/wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle && /usr/bin/pkill -RTMIN+7 dwmblocks") },
-	{ 0,                            XK_Print,  spawn,          SHCMD("/usr/bin/import -window root ~/Castor/Pictures/Screenshots/screenshot-$(date +'%Y-%m-%d:%H-%M-%S').png && /usr/bin/notify-send 'Screenshot Taken'") },
-	{ ShiftMask,                    XK_Print,  spawn,          SHCMD("/usr/bin/flameshot gui") },
+	{ MODKEY|ShiftMask,             XK_Return, spawn,          SHCMD("kitty") },
+	{ Mod4Mask,             		XK_b,      spawn,          SHCMD("librewolf -P") },
+	{ Mod4Mask,             		XK_s,      spawn,          SHCMD("brave") },
+	{ Mod4Mask,             		XK_f,      spawn,          SHCMD("pcmanfm") },
+	{ Mod4Mask,             		XK_m,      spawn,          SHCMD("thunderbird") },
+	{ Mod4Mask,             		XK_l,      spawn,          SHCMD("slock") },
+	{ 0,              XF86XK_MonBrightnessUp,  spawn,          SHCMD("brillo -A 1 && pkill -RTMIN+5 dwmblocks") },
+	{ 0,             XF86XK_MonBrightnessDown, spawn,          SHCMD("brillo -U 1 && pkill -RTMIN+5 dwmblocks") },
+	{ 0,              XF86XK_AudioLowerVolume, spawn,          SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- && pkill -RTMIN+6 dwmblocks") },
+	{ 0,              XF86XK_AudioRaiseVolume, spawn,          SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ && pkill -RTMIN+6 dwmblocks") },
+	{ 0,                	 XF86XK_AudioMute, spawn,          SHCMD("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && pkill -RTMIN+6 dwmblocks") },
+	{ ControlMask,    XF86XK_AudioLowerVolume, spawn,          SHCMD("wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 5%- && pkill -RTMIN+7 dwmblocks") },
+	{ ControlMask,    XF86XK_AudioRaiseVolume, spawn,          SHCMD("wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 5%+ && pkill -RTMIN+7 dwmblocks") },
+	{ ControlMask,           XF86XK_AudioMute, spawn,          SHCMD("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle && pkill -RTMIN+7 dwmblocks") },
+	{ 0,                            XK_Print,  spawn,          SHCMD("import -window root ~/Castor/Pictures/Screenshots/screenshot-$(date +'%Y-%m-%d:%H-%M-%S').png && notify-send 'Screenshot Taken'") },
+	{ ShiftMask,                    XK_Print,  spawn,          SHCMD("flameshot gui") },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
@@ -127,6 +143,7 @@ static const Key keys[] = {
 	{ Mod4Mask,            			XK_p,	   togglescratch,  {.ui = 1 } },
 	{ MODKEY,                       XK_r,      movemouse,      {0} },
 	{ MODKEY|ShiftMask,             XK_r,      resizemouse,    {0} },
+	{ MODKEY,                       XK_s,      setscheme,      {.i = +1 } },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
