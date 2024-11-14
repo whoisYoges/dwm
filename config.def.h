@@ -14,10 +14,16 @@ static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
 static const char col_gray4[]       = "#eeeeee";
 static const char col_cyan[]        = "#005577";
-static const char *colors[][3]      = {
-	/*               fg         bg         border   */
-	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
-	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
+static const char *colors[][SchemeN][3] = {
+		/*               fg         bg         border   */
+	{ /* dark */
+		[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
+		[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
+	},
+	{ /* light */
+		[SchemeNorm] = { col_gray2, col_gray4, col_gray3 },
+		[SchemeSel]  = { col_gray1, col_cyan,  col_cyan  },
+	},
 };
 
 typedef struct {
@@ -113,6 +119,7 @@ static const Key keys[] = {
 	{ MODKEY,            			XK_y,  	   togglescratch,  {.ui = 0 } },
 	{ MODKEY,            			XK_u,	   togglescratch,  {.ui = 1 } },
 	{ MODKEY,            			XK_x,	   togglescratch,  {.ui = 2 } },
+	{ MODKEY,                       XK_s,      setscheme,      {.i = +1 } },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)

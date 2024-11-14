@@ -29,6 +29,8 @@
 
 - [preserveonrestart](https://dwm.suckless.org/patches/preserveonrestart/): By default, when dwm is recompiled-restarted all clients will lose it's current tag and collapse to first tag. This patch preserves clients on old tags, however note that layout order is not preserved.
 
+- [colorschemes](https://dwm.suckless.org/patches/colorschemes/): This patches provides the ability to cycle between any number of colorschemes defined in config.h.
+
 ### Features and Keybindings
 Mod/MODKEY or Mod1Mask key is referred to <kbd>Alt</kbd> key.  
 Super/Mod4Mask or Meta key is referred to <kbd>Windows</kbd> or <kbd>⌘ Command</kbd> key.

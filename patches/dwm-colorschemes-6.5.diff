@@ -1,0 +1,132 @@
+From a9dc99543fe07801587ed1b412cd97b5da01474f Mon Sep 17 00:00:00 2001
+From: Listeria monocytogenes <listeria@disroot.org>
+Date: Wed, 26 Jun 2024 11:49:20 -0300
+Subject: [PATCH] add setscheme() to cycle between colorschemes
+
+---
+ config.def.h | 15 +++++++++++----
+ dwm.c        | 37 ++++++++++++++++++++++++++++---------
+ 2 files changed, 39 insertions(+), 13 deletions(-)
+
+diff --git a/config.def.h b/config.def.h
+index 9efa774..f87f707 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -12,10 +12,16 @@ static const char col_gray2[]       = "#444444";
+ static const char col_gray3[]       = "#bbbbbb";
+ static const char col_gray4[]       = "#eeeeee";
+ static const char col_cyan[]        = "#005577";
+-static const char *colors[][3]      = {
+-	/*               fg         bg         border   */
+-	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
+-	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
++static const char *colors[][SchemeN][3] = {
++		/*               fg         bg         border   */
++	{ /* dark */
++		[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
++		[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
++	},
++	{ /* light */
++		[SchemeNorm] = { col_gray2, col_gray4, col_gray3 },
++		[SchemeSel]  = { col_gray1, col_cyan,  col_cyan  },
++	},
+ };
+ 
+ /* tagging */
+@@ -85,6 +91,7 @@ static const Key keys[] = {
+ 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
+ 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
+ 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
++	{ MODKEY,                       XK_s,      setscheme,      {.i = +1 } },
+ 	TAGKEYS(                        XK_1,                      0)
+ 	TAGKEYS(                        XK_2,                      1)
+ 	TAGKEYS(                        XK_3,                      2)
+diff --git a/dwm.c b/dwm.c
+index f1d86b2..1ac8e05 100644
+--- a/dwm.c
++++ b/dwm.c
+@@ -59,7 +59,7 @@
+ 
+ /* enums */
+ enum { CurNormal, CurResize, CurMove, CurLast }; /* cursor */
+-enum { SchemeNorm, SchemeSel }; /* color schemes */
++enum { SchemeNorm, SchemeSel, SchemeN /* keeplast */ }; /* color schemes */
+ enum { NetSupported, NetWMName, NetWMState, NetWMCheck,
+        NetWMFullscreen, NetActiveWindow, NetWMWindowType,
+        NetWMWindowTypeDialog, NetClientList, NetLast }; /* EWMH atoms */
+@@ -202,6 +202,7 @@ static void setfocus(Client *c);
+ static void setfullscreen(Client *c, int fullscreen);
+ static void setlayout(const Arg *arg);
+ static void setmfact(const Arg *arg);
++static void setscheme(const Arg *arg);
+ static void setup(void);
+ static void seturgent(Client *c, int urg);
+ static void showhide(Client *c);
+@@ -262,7 +263,7 @@ static void (*handler[LASTEvent]) (XEvent *) = {
+ static Atom wmatom[WMLast], netatom[NetLast];
+ static int running = 1;
+ static Cur *cursor[CurLast];
+-static Clr **scheme;
++static Clr **schemes, **scheme;
+ static Display *dpy;
+ static Drw *drw;
+ static Monitor *mons, *selmon;
+@@ -486,9 +487,9 @@ cleanup(void)
+ 		cleanupmon(mons);
+ 	for (i = 0; i < CurLast; i++)
+ 		drw_cur_free(drw, cursor[i]);
+-	for (i = 0; i < LENGTH(colors); i++)
+-		free(scheme[i]);
+-	free(scheme);
++	for (i = 0; i < LENGTH(colors) * SchemeN; i++)
++		free(schemes[i]);
++	free(schemes);
+ 	XDestroyWindow(dpy, wmcheckwin);
+ 	drw_free(drw);
+ 	XSync(dpy, False);
+@@ -1536,10 +1537,25 @@ setmfact(const Arg *arg)
+ 	arrange(selmon);
+ }
+ 
++void
++setscheme(const Arg *arg)
++{
++	ptrdiff_t si = (scheme - schemes) + arg->i * SchemeN;
++
++	/* wrap around, won't work if (abs(arg->i) > LENGTH(colors)) */
++	if (si < 0)
++		si += LENGTH(colors) * SchemeN;
++	else if (si >= LENGTH(colors) * SchemeN)
++		si -= LENGTH(colors) * SchemeN;
++
++	scheme = &schemes[si];
++	drawbars();
++}
++
+ void
+ setup(void)
+ {
+-	int i;
++	int i, j;
+ 	XSetWindowAttributes wa;
+ 	Atom utf8string;
+ 	struct sigaction sa;
+@@ -1584,9 +1600,12 @@ setup(void)
+ 	cursor[CurResize] = drw_cur_create(drw, XC_sizing);
+ 	cursor[CurMove] = drw_cur_create(drw, XC_fleur);
+ 	/* init appearance */
+-	scheme = ecalloc(LENGTH(colors), sizeof(Clr *));
+-	for (i = 0; i < LENGTH(colors); i++)
+-		scheme[i] = drw_scm_create(drw, colors[i], 3);
++	schemes = ecalloc(LENGTH(colors), SchemeN * sizeof(Clr *));
++	for (j = LENGTH(colors) - 1; j >= 0; j--) {
++		scheme = &schemes[j * SchemeN];
++		for (i = 0; i < SchemeN; i++)
++			scheme[i] = drw_scm_create(drw, colors[j][i], 3);
++	}
+ 	/* init bars */
+ 	updatebars();
+ 	updatestatus();
+-- 
+2.45.2
+
