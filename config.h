@@ -2,13 +2,13 @@
 #include <X11/XF86keysym.h>
 
 /* appearance */
-static const unsigned int borderpx  = 2;        /* border pixel of windows */
+static const unsigned int borderpx  = 3;        /* border pixel of windows */
 static const unsigned int gappx     = 5;        /* gaps between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const int showbar            = 1;        /* 0 means no bar */
-static const int topbar             = 0;        /* 0 means bottom bar */
-static const char *fonts[]          = { "Comic Sans MS:size=12", "Font Awesome 6 Free Solid:size=10" };
+static const int topbar             = 1;        /* 0 means bottom bar */
+static const char *fonts[]          = { "CaskaydiaCove NF:size=11", "Symbols Nerd Font:size=9" };
 
 static const char normbg[]          = "#3c3836";
 static const char normfg[]          = "#ebdbb2";
@@ -36,7 +36,7 @@ static Sp scratchpads[] = {
 };
 
 /* tagging */
-static const char *tags[] = { "", "", " ", "", "", "" };
+static const char *tags[] = { "", "", "", "", "", "" };
 static const Rule rules[] = {
 	/* xprop(1):
 	 *	WM_CLASS(STRING) = instance, class

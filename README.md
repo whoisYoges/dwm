@@ -47,9 +47,7 @@ Super/Mod4Mask or Meta key is referred to <kbd>Windows</kbd> or <kbd>⌘ Command
 - [libxinerama](https://archlinux.org/packages/extra/x86_64/libxinerama/)
 - [libx11](https://archlinux.org/packages/extra/x86_64/libx11/)
 - [libxft](https://archlinux.org/packages/extra/x86_64/libxft/)
-- Fonts:
-    - [Comic Sans MS](ComicSansMS/ComicSansMS.ttf)
-    - [Font Awesome 6 Free Solid](Font-Awesome/fa-solid-900.ttf)
+- [nerd-fonts](https://github.com/ryanoasis/nerd-fonts)
 
 ### Configuration
 Edit config.mk to match your local setup (dwm is installed into the /usr/local namespace by default).
@@ -60,14 +58,7 @@ The configuration of dwm is done copying [config.def.h](config.def.h) to `config
 
 1. Install all the required [dependencies](#dependencies).
 
-2. Copy required fonts to fonts directory.
-
-```
-sudo cp -r ComicSansMS /usr/share/fonts/
-sudo cp -r Font-Awesome /usr/share/fonts/
-```
-
-3. Install dwm.
+2. Install dwm.
 
 ```
 sudo make install
