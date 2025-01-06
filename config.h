@@ -8,23 +8,23 @@ static const unsigned int snap      = 32;       /* snap pixel */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "CaskaydiaCove NF:size=11", "Symbols Nerd Font:size=9" };
+static const char *fonts[]          = { "0xProto Nerd Font:size=11", "CaskaydiaCove NF:size=11", "Symbols Nerd Font:size=9" };
 
 /* Color Scheme - Light */
-static const char light_normbg[]          = "#e6e7ed";
-static const char light_normfg[]          = "#343b58";
-static const char light_normborder[]      = "#5a3e8e";
-static const char light_selbg[]           = "#e6e7ed";
-static const char light_selfg[]           = "#965027";
-static const char light_selborder[]       = "#965027";
+static const char light_normbg[]          = "#fbf1c7";
+static const char light_normfg[]          = "#3c3836";
+static const char light_normborder[]      = "#d5c4a1";
+static const char light_selbg[]           = "#fbf1c7";
+static const char light_selfg[]           = "#b8bb26";
+static const char light_selborder[]       = "#b8bb26";
 
 /* Color Scheme - Dark */
-static const char dark_normbg[]          = "#313244";
-static const char dark_normfg[]          = "#cdd6f4";
-static const char dark_normborder[]      = "#f5e0dc";
-static const char dark_selbg[]           = "#313244";
-static const char dark_selfg[]           = "#f38ba8";
-static const char dark_selborder[]       = "#f38ba8";
+static const char dark_normbg[]          = "#282828";
+static const char dark_normfg[]          = "#ebdbb2";
+static const char dark_normborder[]      = "#7c6f64";
+static const char dark_selbg[]           = "#282828";
+static const char dark_selfg[]           = "#98971a";
+static const char dark_selborder[]       = "#98971a";
 
 static const char *colors[][SchemeN][3] = {
 		/*               fg         bg         border   */
@@ -58,6 +58,7 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class     instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
+	{ "ghostty", NULL,     NULL,           0,         0,          1,           0,        -1 },
 	{ "kitty",   NULL,     NULL,           0,         0,          1,           0,        -1 },
 	{ NULL,      NULL,     "Event Tester", 0,         0,          0,           1,        -1 }, /* xev */
 	{ NULL,     "spterm",  "spterm",       SPTAG(0),  1,          1,           1,        -1 },
@@ -97,7 +98,7 @@ static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, NULL };
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
-	{ MODKEY|ShiftMask,             XK_Return, spawn,          SHCMD("kitty") },
+	{ MODKEY|ShiftMask,             XK_Return, spawn,          SHCMD("ghostty") },
 	{ Mod4Mask,             		XK_b,      spawn,          SHCMD("librewolf -P") },
 	{ Mod4Mask,             		XK_s,      spawn,          SHCMD("brave") },
 	{ Mod4Mask,             		XK_f,      spawn,          SHCMD("pcmanfm") },
@@ -150,8 +151,8 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_4,                      3)
 	TAGKEYS(                        XK_5,                      4)
 	TAGKEYS(                        XK_6,                      5)
-	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
-	{ MODKEY|ControlMask|ShiftMask, XK_q,      quit,           {1} }, 
+	{ MODKEY|ShiftMask,             XK_q,      quit,           {1} },
+	{ MODKEY|ControlMask|ShiftMask, XK_q,      quit,           {0} },
 };
 
 /* button definitions */

@@ -5,7 +5,8 @@
 - [Configuration](#configuration)
 - [Installation](#installation)
 
-![Preview_Image](preview.jpg)
+![Preview Dark Theme](preview-dark.jpg)
+![Preview Light Theme](preview-light.jpg)
 
 ### Applied Patches
 
